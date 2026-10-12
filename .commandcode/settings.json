@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(npx eslint app components --max-warnings=0)",
+      "Shell(npx --noEmit)",
+      "Shell(npx tsc --noEmit)",
+      "Shell(npx eslint app/login app/register components --max-warnings=0)",
+      "Shell(npx prisma generate)",
+      "Shell(npx prisma db push)",
+      "Shell(npm:*)",
+      "Shell(for:*)",
+      "Shell(do:*)",
+      "Shell(then:*)",
+      "Shell(else:*)",
+      "Shell(fi:*)",
+      "Shell(done:*)",
+      "Shell(cat:*)",
+      "Shell(echo:*)",
+      "Shell(node -e const l=require('./package-lock.json'); console.log('lockfileVersion', l.lockfileVersion, 'packages', Object.keys(l.packages||{}).length))",
+      "Shell(grep:*)",
+      "Shell(node -e const l=require('./package-lock.json'); console.log(JSON.stringify(l.packages['node_modules/tailwindcss'],null,2)); console.log('root devDeps:', JSON.stringify(l.packages[''].devDependencies,null,2)))",
+      "Shell(env)",
+      "Shell(node -e const l=require('./package-lock.json'); console.log(JSON.stringify(l.packages['node_modules/dotenv'],null,2)); console.log(JSON.stringify(l.packages['node_modules/eslint'],null,2)))",
+      "Shell(node -e console.log(require('prisma/package.json').version))",
+      "Shell(node -e const c=require('prisma/config'); console.log(Object.keys(c)))",
+      "Shell(npx eslint app/add-parcel/page.tsx app/api/add-parcel/route.ts components/toast.tsx lib/bangladesh-locations.ts lib/prisma.ts app/layout.tsx)",
+      "Shell(npx next dev -p 3199)",
+      "Shell(for i in $(seq 1 30); do if curl -sf -o /dev/null http://localhost:3199/add-parcel; then echo \"UP after ${i}s\"; break; fi; sleep 1; done; echo \"--- HTTP status ---\"; curl -s -o /dev/null -w \"%{http_code}\\n\" http://localhost:3199/add-parcel; echo \"--- page contains heading? ---\"; curl -s http://localhost:3199/add-parcel | grep -o \"Add a parcel\" | head -1)",
+      "Shell(curl -s -o /dev/null -w %{http_code}\\n http://localhost:3000/add-parcel)",
+      "Shell(curl -s http://localhost:3000/add-parcel)",
+      "Shell(tail:*)",
+      "Shell(curl -s -o /dev/null -w %{http_code}\\n http://localhost:3000/)",
+      "Shell(rm:*)",
+      "Shell(node -e \"console.log('stripe', require('stripe/package.json').version); console.log('@stripe/stripe-js', require('@stripe/stripe-js/package.json').version); console.log('@stripe/react-stripe-js', require('@stripe/react-stripe-js/package.json').version)\")",
+      "Shell(npx eslint app/add-parcel/page.tsx app/api/add-parcel/route.ts app/api/payment/create-intent/route.ts components/parcel-payment.tsx lib/parcel-pricing.ts lib/stripe.ts lib/stripe-client.ts)",
+      "Shell(echo \"=== .env location ===\"; ls -la .env; echo \"=== keys before ===\"; grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' .env | tr -d '='; grep -q '^STRIPE_SECRET_KEY=' .env || printf '\\n# Stripe (test mode)\\nSTRIPE_SECRET_KEY=\\n' >> .env; grep -q '^NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=' .env || printf 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\\n' >> .env; echo \"=== keys after ===\"; grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' .env | tr -d '=')"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  }
+}
