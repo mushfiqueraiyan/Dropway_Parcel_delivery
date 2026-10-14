@@ -43,7 +43,8 @@ model Parcel {
   amount          Float
   paymentIntentId String?
   currentLocation String?
-  userId          String
+  userId          String  
+  tracking        String @default("pending")
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

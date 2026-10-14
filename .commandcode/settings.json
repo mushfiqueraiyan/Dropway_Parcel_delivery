@@ -33,7 +33,13 @@
       "Shell(rm:*)",
       "Shell(node -e \"console.log('stripe', require('stripe/package.json').version); console.log('@stripe/stripe-js', require('@stripe/stripe-js/package.json').version); console.log('@stripe/react-stripe-js', require('@stripe/react-stripe-js/package.json').version)\")",
       "Shell(npx eslint app/add-parcel/page.tsx app/api/add-parcel/route.ts app/api/payment/create-intent/route.ts components/parcel-payment.tsx lib/parcel-pricing.ts lib/stripe.ts lib/stripe-client.ts)",
-      "Shell(echo \"=== .env location ===\"; ls -la .env; echo \"=== keys before ===\"; grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' .env | tr -d '='; grep -q '^STRIPE_SECRET_KEY=' .env || printf '\\n# Stripe (test mode)\\nSTRIPE_SECRET_KEY=\\n' >> .env; grep -q '^NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=' .env || printf 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\\n' >> .env; echo \"=== keys after ===\"; grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' .env | tr -d '=')"
+      "Shell(echo \"=== .env location ===\"; ls -la .env; echo \"=== keys before ===\"; grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' .env | tr -d '='; grep -q '^STRIPE_SECRET_KEY=' .env || printf '\\n# Stripe (test mode)\\nSTRIPE_SECRET_KEY=\\n' >> .env; grep -q '^NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=' .env || printf 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\\n' >> .env; echo \"=== keys after ===\"; grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' .env | tr -d '=')",
+      "Shell(ls:*)",
+      "Shell(node -e console.log(JSON.stringify(require('./package.json').scripts,null,2)))",
+      "Shell(node -e const p=require('./package.json');console.log('prisma',p.devDependencies?.prisma||p.dependencies?.prisma,'client',p.dependencies?.['@prisma/client']||p.devDependencies?.['@prisma/client']))",
+      "Shell(node --env-file=.env --import /private/tmp/commandcode-501/-Users-mushfiqueraiyan-logistics/a1ef88e9-630c-49d9-a6ee-062e4aab0d1e/scratchpad/register.mjs /private/tmp/commandcode-501/-Users-mushfiqueraiyan-logistics/a1ef88e9-630c-49d9-a6ee-062e4aab0d1e/scratchpad/session.mts 2 >& 1)",
+      "Shell(kill:*)",
+      "Shell(curl -s -o /dev/null -w 'GET /track -> %{http_code}\\n' http://localhost:3000/track)"
     ],
     "deny": [],
     "defaultMode": "default"
