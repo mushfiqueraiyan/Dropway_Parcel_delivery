@@ -26,6 +26,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   parcels       Parcel[]
+  rider         Rider?
 
   @@unique([email])
   @@map("user")
@@ -35,10 +36,14 @@ model Parcel {
   id              String   @id @map("_id")
   title           String
   weight          Float
-  location        String
-  district        String
-  upazila         String
-  status          String   @default("paid")
+  pickup_location        String
+  pickup_district        String
+  pickup_upazila         String
+
+  dropoff_location        String
+  dropoff_district        String
+  dropoff_upazila         String
+  
   paymentStatus   String   @default("paid")
   amount          Float
   paymentIntentId String?
@@ -100,4 +105,22 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+
+model Rider{
+  id              String   @id @map("_id")
+  userId          String   @unique
+  name            String
+  phoneNumber     String
+  location        String
+  district        String
+  upazila         String
+  nid             String
+  status          String   @default("pending")
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("rider")
 }

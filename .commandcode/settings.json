@@ -39,7 +39,9 @@
       "Shell(node -e const p=require('./package.json');console.log('prisma',p.devDependencies?.prisma||p.dependencies?.prisma,'client',p.dependencies?.['@prisma/client']||p.devDependencies?.['@prisma/client']))",
       "Shell(node --env-file=.env --import /private/tmp/commandcode-501/-Users-mushfiqueraiyan-logistics/a1ef88e9-630c-49d9-a6ee-062e4aab0d1e/scratchpad/register.mjs /private/tmp/commandcode-501/-Users-mushfiqueraiyan-logistics/a1ef88e9-630c-49d9-a6ee-062e4aab0d1e/scratchpad/session.mts 2 >& 1)",
       "Shell(kill:*)",
-      "Shell(curl -s -o /dev/null -w 'GET /track -> %{http_code}\\n' http://localhost:3000/track)"
+      "Shell(curl -s -o /dev/null -w 'GET /track -> %{http_code}\\n' http://localhost:3000/track)",
+      "Shell(lsof:*)",
+      "Shell(ps:*)"
     ],
     "deny": [],
     "defaultMode": "default"

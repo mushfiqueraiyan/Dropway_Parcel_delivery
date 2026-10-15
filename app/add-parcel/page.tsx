@@ -18,17 +18,25 @@ import {
 interface ParcelForm {
   title: string;
   weight: string;
-  location: string;
-  district: string;
-  upazila: string;
+  pickup_location: string;
+  pickup_district: string;
+  pickup_upazila: string;
+
+  dropoff_location: string;
+  dropoff_district: string;
+  dropoff_upazila: string;
 }
 
 const EMPTY_FORM: ParcelForm = {
   title: "",
   weight: "",
-  location: "",
-  district: "",
-  upazila: "",
+  pickup_location: "",
+  pickup_district: "",
+  pickup_upazila: "",
+
+  dropoff_location: "",
+  dropoff_district: "",
+  dropoff_upazila: "",
 };
 
 const FIELD_CLASS =
@@ -37,7 +45,7 @@ const FIELD_CLASS =
 const INTRO_STEPS = [
   {
     title: "Enter the details",
-    body: "Title, weight, pickup address, then district and upazila.",
+    body: "Title, weight, then pickup and drop-off addresses with district and upazila.",
   },
   {
     title: "Settle the fare",
@@ -94,9 +102,11 @@ export default function AddParcelPage() {
     formState: { errors },
   } = useForm<ParcelForm>({ defaultValues: EMPTY_FORM });
 
-  const selectedDistrict = useWatch({ control, name: "district" });
+  const pickupDistrict = useWatch({ control, name: "pickup_district" });
+  const dropoffDistrict = useWatch({ control, name: "dropoff_district" });
   const weight = useWatch({ control, name: "weight" });
-  const upazilas = getUpazilas(selectedDistrict);
+  const pickupUpazilas = getUpazilas(pickupDistrict);
+  const dropoffUpazilas = getUpazilas(dropoffDistrict);
   const estimatedFee = calculateParcelFee(Number(weight));
 
   const startPayment = async (data: ParcelForm) => {
@@ -253,10 +263,16 @@ export default function AddParcelPage() {
                       {getValues("weight")} kg
                     </dd>
                   </div>
-                  <div className="flex items-center justify-between gap-4 py-2.5">
-                    <dt className="text-sm text-graphite">Location</dt>
-                    <dd className="truncate text-sm text-ink">
-                      {getValues("upazila")}, {getValues("district")}
+                  <div className="flex items-start justify-between gap-4 py-2.5">
+                    <dt className="text-sm text-graphite">Route</dt>
+                    <dd className="text-right text-sm text-ink">
+                      <span className="block">
+                        {getValues("pickup_upazila")}, {getValues("pickup_district")}
+                      </span>
+                      <span className="mt-0.5 block text-graphite">
+                        to {getValues("dropoff_upazila")},{" "}
+                        {getValues("dropoff_district")}
+                      </span>
                     </dd>
                   </div>
                   <div className="flex items-center justify-between gap-4 py-2.5">
@@ -314,41 +330,44 @@ export default function AddParcelPage() {
                       <FieldError message={errors.weight?.message} />
                     </div>
 
-                    <div>
-                      <label htmlFor="location" className="eyebrow block text-graphite">
-                        Pickup address
-                      </label>
-                      <input
-                        id="location"
-                        type="text"
-                        autoComplete="street-address"
-                        placeholder="House 12, Road 5, Sector 3"
-                        className={FIELD_CLASS}
-                        {...register("location", {
-                          required: "Pickup address is required",
-                        })}
-                      />
-                      <FieldError message={errors.location?.message} />
-                    </div>
-
                     <fieldset className="border-t border-ink/10 pt-5">
-                      <legend className="eyebrow text-graphite">Location</legend>
+                      <legend className="eyebrow text-graphite">Pickup</legend>
+
+                      <div className="mt-4">
+                        <label
+                          htmlFor="pickup_location"
+                          className="eyebrow block text-graphite"
+                        >
+                          Pickup address
+                        </label>
+                        <input
+                          id="pickup_location"
+                          type="text"
+                          autoComplete="street-address"
+                          placeholder="House 12, Road 5, Sector 3"
+                          className={FIELD_CLASS}
+                          {...register("pickup_location", {
+                            required: "Pickup address is required",
+                          })}
+                        />
+                        <FieldError message={errors.pickup_location?.message} />
+                      </div>
 
                       <div className="mt-4 grid gap-5 sm:grid-cols-2">
                         <div>
                           <label
-                            htmlFor="district"
+                            htmlFor="pickup_district"
                             className="eyebrow block text-graphite"
                           >
                             District
                           </label>
                           <select
-                            id="district"
+                            id="pickup_district"
                             defaultValue=""
                             className={FIELD_CLASS}
-                            {...register("district", {
+                            {...register("pickup_district", {
                               required: "Select a district",
-                              onChange: () => setValue("upazila", ""),
+                              onChange: () => setValue("pickup_upazila", ""),
                             })}
                           >
                             <option value="" disabled>
@@ -364,37 +383,125 @@ export default function AddParcelPage() {
                               </optgroup>
                             ))}
                           </select>
-                          <FieldError message={errors.district?.message} />
+                          <FieldError message={errors.pickup_district?.message} />
                         </div>
 
                         <div>
                           <label
-                            htmlFor="upazila"
+                            htmlFor="pickup_upazila"
                             className="eyebrow block text-graphite"
                           >
                             Upazila
                           </label>
                           <select
-                            id="upazila"
+                            id="pickup_upazila"
                             defaultValue=""
-                            disabled={!selectedDistrict}
+                            disabled={!pickupDistrict}
                             className={FIELD_CLASS}
-                            {...register("upazila", {
+                            {...register("pickup_upazila", {
                               required: "Select an upazila",
                             })}
                           >
                             <option value="" disabled>
-                              {selectedDistrict
+                              {pickupDistrict
                                 ? "Select upazila"
                                 : "Select a district first"}
                             </option>
-                            {upazilas.map((upazila) => (
+                            {pickupUpazilas.map((upazila) => (
                               <option key={upazila} value={upazila}>
                                 {upazila}
                               </option>
                             ))}
                           </select>
-                          <FieldError message={errors.upazila?.message} />
+                          <FieldError message={errors.pickup_upazila?.message} />
+                        </div>
+                      </div>
+                    </fieldset>
+
+                    <fieldset className="border-t border-ink/10 pt-5">
+                      <legend className="eyebrow text-graphite">Drop-off</legend>
+
+                      <div className="mt-4">
+                        <label
+                          htmlFor="dropoff_location"
+                          className="eyebrow block text-graphite"
+                        >
+                          Drop-off address
+                        </label>
+                        <input
+                          id="dropoff_location"
+                          type="text"
+                          autoComplete="street-address"
+                          placeholder="Flat 4B, Road 11, Banani"
+                          className={FIELD_CLASS}
+                          {...register("dropoff_location", {
+                            required: "Drop-off address is required",
+                          })}
+                        />
+                        <FieldError message={errors.dropoff_location?.message} />
+                      </div>
+
+                      <div className="mt-4 grid gap-5 sm:grid-cols-2">
+                        <div>
+                          <label
+                            htmlFor="dropoff_district"
+                            className="eyebrow block text-graphite"
+                          >
+                            District
+                          </label>
+                          <select
+                            id="dropoff_district"
+                            defaultValue=""
+                            className={FIELD_CLASS}
+                            {...register("dropoff_district", {
+                              required: "Select a district",
+                              onChange: () => setValue("dropoff_upazila", ""),
+                            })}
+                          >
+                            <option value="" disabled>
+                              Select district
+                            </option>
+                            {DISTRICTS_BY_DIVISION.map((group) => (
+                              <optgroup key={group.division} label={group.division}>
+                                {group.districts.map((district) => (
+                                  <option key={district} value={district}>
+                                    {district}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            ))}
+                          </select>
+                          <FieldError message={errors.dropoff_district?.message} />
+                        </div>
+
+                        <div>
+                          <label
+                            htmlFor="dropoff_upazila"
+                            className="eyebrow block text-graphite"
+                          >
+                            Upazila
+                          </label>
+                          <select
+                            id="dropoff_upazila"
+                            defaultValue=""
+                            disabled={!dropoffDistrict}
+                            className={FIELD_CLASS}
+                            {...register("dropoff_upazila", {
+                              required: "Select an upazila",
+                            })}
+                          >
+                            <option value="" disabled>
+                              {dropoffDistrict
+                                ? "Select upazila"
+                                : "Select a district first"}
+                            </option>
+                            {dropoffUpazilas.map((upazila) => (
+                              <option key={upazila} value={upazila}>
+                                {upazila}
+                              </option>
+                            ))}
+                          </select>
+                          <FieldError message={errors.dropoff_upazila?.message} />
                         </div>
                       </div>
                     </fieldset>

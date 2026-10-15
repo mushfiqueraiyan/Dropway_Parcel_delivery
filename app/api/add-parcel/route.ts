@@ -9,9 +9,13 @@ import { calculateParcelFee } from "@/lib/parcel-pricing";
 interface ParcelBody {
   title?: string;
   weight?: string | number;
-  location?: string;
-  district?: string;
-  upazila?: string;
+  pickup_location?: string;
+  pickup_district?: string;
+  pickup_upazila?: string;
+
+  dropoff_location?: string;
+  dropoff_district?: string;
+  dropoff_upazila?: string;
   paymentIntentId?: string;
 }
 
@@ -27,9 +31,9 @@ export async function POST(request: NextRequest) {
     }
 
     const body = (await request.json()) as ParcelBody;
-    const { title, weight, location, district, upazila, paymentIntentId } = body;
+    const { title, weight, pickup_location, pickup_district, pickup_upazila, dropoff_location, dropoff_district, dropoff_upazila, paymentIntentId } = body;
 
-    if (!title || !weight || !location || !district || !upazila) {
+    if (!title || !weight || !pickup_location || !pickup_district || !pickup_upazila || !dropoff_location || !dropoff_district || !dropoff_upazila) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },
@@ -93,14 +97,17 @@ export async function POST(request: NextRequest) {
         id: crypto.randomUUID(),
         title,
         weight: parsedWeight,
-        location,
-        district,
-        upazila,
-        status: "paid",
+        pickup_location,
+        pickup_district,
+        pickup_upazila,
+
+        dropoff_location,
+        dropoff_district,
+        dropoff_upazila,
         paymentStatus: "paid",
         amount: fee,
         paymentIntentId,
-        currentLocation: `${upazila}, ${district}`,
+        currentLocation: `${pickup_upazila}, ${pickup_district}`,
         userId: session.user.id,
       },
     });

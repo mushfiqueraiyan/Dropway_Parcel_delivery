@@ -5,9 +5,12 @@ type Parcel = {
   id: string;
   title: string;
   weight: number;
-  location: string;
-  district: string;
-  upazila: string;
+  pickup_location: string;
+  pickup_district: string;
+  pickup_upazila: string;
+  dropoff_location: string;
+  dropoff_district: string;
+  dropoff_upazila: string;
   tracking: string | null;
   status?: string;
   createdAt: string;
@@ -127,12 +130,23 @@ const Track = () => {
                 <dl className="mt-4 space-y-3 text-sm">
                   <div className="flex items-start gap-3">
                     <dt className="eyebrow mt-0.5 w-20 shrink-0 text-graphite">
-                      Route
+                      Pickup
                     </dt>
                     <dd className="min-w-0 flex-1 text-ink">
-                      <span className="block truncate">{item.location}</span>
+                      <span className="block truncate">{item.pickup_location}</span>
                       <span className="mt-0.5 block font-medium">
-                        {item.upazila}, {item.district}
+                        {item.pickup_upazila}, {item.pickup_district}
+                      </span>
+                    </dd>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <dt className="eyebrow mt-0.5 w-20 shrink-0 text-graphite">
+                      Drop-off
+                    </dt>
+                    <dd className="min-w-0 flex-1 text-ink">
+                      <span className="block truncate">{item.dropoff_location}</span>
+                      <span className="mt-0.5 block font-medium">
+                        {item.dropoff_upazila}, {item.dropoff_district}
                       </span>
                     </dd>
                   </div>
