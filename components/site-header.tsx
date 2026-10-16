@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+
+
 import { Logo } from "@/components/logo";
 import { authClient } from "@/lib/auth-client";
 
@@ -40,6 +42,9 @@ export function SiteHeader() {
   const { data: session, isPending } = authClient.useSession();
 
   const user = session?.user;
+  const admin = session?.user.role === 'admin'
+  const role = session?.user.role === 'rider'
+  
 
   const handleLogout = async () => {
     await authClient.signOut();
@@ -81,6 +86,22 @@ export function SiteHeader() {
           >
             Track
           </a>
+
+          {admin ? (
+            <Link
+              href="/admin-dashboard"
+              className="rounded-full px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-paper"
+            >
+              Dashboard
+            </Link>
+          ) : role ? (
+            <Link
+              href="/rider-dashboard"
+              className="rounded-full px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-paper"
+            >
+              Rider Hub
+            </Link>
+          ) : null}
 
           {!isPending && !user ? (
             <Link
@@ -193,6 +214,24 @@ export function SiteHeader() {
           >
             Track a parcel
           </a>
+
+          {admin ? (
+            <Link
+              href="/admin-dashboard"
+              onClick={() => setOpen(false)}
+              className="mt-2 rounded-full border border-white/20 px-4 py-3 text-center text-sm font-semibold text-paper"
+            >
+              Dashboard
+            </Link>
+          ) : role ? (
+            <Link
+              href="/rider-dashboard"
+              onClick={() => setOpen(false)}
+              className="mt-2 rounded-full border border-white/20 px-4 py-3 text-center text-sm font-semibold text-paper"
+            >
+              Rider Hub
+            </Link>
+          ) : null}
 
           {user ? (
             <>
