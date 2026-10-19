@@ -28,10 +28,10 @@ async function AdminParcelsGate() {
     redirect("/");
   }
 
-  // Only show parcels that still need a rider assigned.
+  
   const parcels = await prisma.parcel.findMany({
     where: {
-      OR: [{ pickupRiderId: null }, { deliveryRiderId: null }],
+      OR: [{ pickupRider: { is: null } }, { deliveryRider: { is: null } }],
     },
     orderBy: { createdAt: "desc" },
     include: {

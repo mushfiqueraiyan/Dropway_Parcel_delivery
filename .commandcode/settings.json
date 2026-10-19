@@ -48,7 +48,10 @@
       "Shell(npx eslint app/admin-dashboard app/api/admin)",
       "Shell(npx --yes tsx prisma/seed-riders.ts)",
       "Shell(npx eslint app/admin-dashboard app/api/rider)",
-      "Shell(npx tsx prisma/_check.ts)"
+      "Shell(npx tsx prisma/_check.ts)",
+      "Shell(npx tsx prisma/rename-riders.ts)",
+      "Shell(npx tsx -e import {PrismaClient} from './app/generated/prisma/client'; const p=new PrismaClient(); Promise.all([p.rider.count(), p.rider.findMany({take:6,orderBy:{createdAt:'asc'},select:{name:true}}) ]).then(([n,r])=>console.log('riders:',n, r.map(x=>x.name).join(' | '))).finally(()=>p.$disconnect()))",
+      "Shell(npx eslint app/admin-dashboard)"
     ],
     "deny": [],
     "defaultMode": "default"
