@@ -50,7 +50,11 @@ model Parcel {
   currentLocation String?
   userId          String  
   tracking        String @default("pending")
+  pickupRiderId   String?
+  deliveryRiderId String?
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pickupRider     Rider?   @relation("PickupRider", fields: [pickupRiderId], references: [id])
+  deliveryRider   Rider?   @relation("DeliveryRider", fields: [deliveryRiderId], references: [id])
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -119,6 +123,8 @@ model Rider{
   nid             String
   status          String   @default("pending")
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pickupParcels   Parcel[] @relation("PickupRider")
+  deliveryParcels Parcel[] @relation("DeliveryRider")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 

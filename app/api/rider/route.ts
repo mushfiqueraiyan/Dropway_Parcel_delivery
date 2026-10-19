@@ -148,12 +148,11 @@ export async function PATCH(req: NextRequest) {
       data: { status },
     });
 
-    if (status === "active") {
-      await prisma.user.update({
-        where: { id: userId },
-        data: { role: "Rider" },
-      });
-    }
+    // Keep the user's role in sync so active riders can open the rider dashboard.
+    await prisma.user.update({
+      where: { id: userId },
+      data: { role: status === "active" ? "rider" : "user" },
+    });
 
     return NextResponse.json({ rider });
   } catch (err) {

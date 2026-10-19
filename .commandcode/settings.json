@@ -44,7 +44,11 @@
       "Shell(ps:*)",
       "Shell(agent-browser:*)",
       "Shell(cd \"$COMMANDCODE_SCRATCHPAD\" && rm -f shot*.png && agent-browser open \"http://localhost:3000/\" >/dev/null 2>&1 && agent-browser set viewport 1280 1000 >/dev/null 2>&1 && agent-browser eval \"window.scrollTo(0,0)\" >/dev/null 2>&1 && for i in 1 2 3 4 5; do agent-browser screenshot --screenshot-dir . \"shot$i.png\" >/dev/null 2>&1; agent-browser scroll down 1000 >/dev/null 2>&1; done; agent-browser close >/dev/null 2>&1; ls -la shot*.png)",
-      "Shell(cd \"$COMMANDCODE_SCRATCHPAD\" && rm -f s*.png && agent-browser open \"http://localhost:3000/\" >/dev/null 2>&1 && agent-browser set viewport 1280 1000 >/dev/null 2>&1 && agent-browser eval \"document.documentElement.style.scrollBehavior='auto'; window.scrollTo(0,2500); 'ok'\" >/dev/null 2>&1 && agent-browser screenshot --screenshot-dir . s1.png >/dev/null 2>&1 && agent-browser eval \"window.scrollTo(0,3400); 'ok'\" >/dev/null 2>&1 && agent-browser screenshot --screenshot-dir . s2.png >/dev/null 2>&1 && agent-browser eval \"window.scrollTo(0,document.body.scrollHeight); 'ok'\" >/dev/null 2>&1 && agent-browser screenshot --screenshot-dir . s3.png >/dev/null 2>&1 && agent-browser close >/dev/null 2>&1; ls -la s*.png)"
+      "Shell(cd \"$COMMANDCODE_SCRATCHPAD\" && rm -f s*.png && agent-browser open \"http://localhost:3000/\" >/dev/null 2>&1 && agent-browser set viewport 1280 1000 >/dev/null 2>&1 && agent-browser eval \"document.documentElement.style.scrollBehavior='auto'; window.scrollTo(0,2500); 'ok'\" >/dev/null 2>&1 && agent-browser screenshot --screenshot-dir . s1.png >/dev/null 2>&1 && agent-browser eval \"window.scrollTo(0,3400); 'ok'\" >/dev/null 2>&1 && agent-browser screenshot --screenshot-dir . s2.png >/dev/null 2>&1 && agent-browser eval \"window.scrollTo(0,document.body.scrollHeight); 'ok'\" >/dev/null 2>&1 && agent-browser screenshot --screenshot-dir . s3.png >/dev/null 2>&1 && agent-browser close >/dev/null 2>&1; ls -la s*.png)",
+      "Shell(npx eslint app/admin-dashboard app/api/admin)",
+      "Shell(npx --yes tsx prisma/seed-riders.ts)",
+      "Shell(npx eslint app/admin-dashboard app/api/rider)",
+      "Shell(npx tsx prisma/_check.ts)"
     ],
     "deny": [],
     "defaultMode": "default"
