@@ -3,18 +3,23 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import RiderParcels, { type RiderParcel } from "./rider-parcels";
 
-function RiderDashboardSkeleton() {
+function RiderParcelsSkeleton() {
   return (
-    <main className="mx-auto w-full max-w-3xl px-5 py-16">
-      <div className="h-6 w-24 animate-pulse rounded bg-ink/10" />
-      <div className="mt-4 h-9 w-56 animate-pulse rounded bg-ink/10" />
-      <div className="mt-8 h-40 animate-pulse rounded-2xl bg-ink/5" />
-    </main>
+    <div className="rounded-2xl border border-ink/10 bg-paper p-5 shadow-sm">
+      <div className="h-7 w-40 animate-pulse rounded bg-ink/10" />
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        {[0, 1, 2, 3].map((index) => (
+          <div key={index} className="h-48 animate-pulse rounded-2xl bg-ink/5" />
+        ))}
+      </div>
+    </div>
   );
 }
 
-async function RiderDashboardGate() {
+async function RiderParcelsGate() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -23,15 +28,52 @@ async function RiderDashboardGate() {
     redirect("/");
   }
 
-  return <div>RiderDashboard</div>;
+  const rider = await prisma.rider.findUnique({
+    where: { userId: session.user.id },
+  });
+
+  if (!rider) {
+    return (
+      <div className="rounded-2xl border border-ink/10 bg-paper p-10 text-center text-sm text-graphite shadow-sm">
+        No rider profile found for your account.
+      </div>
+    );
+  }
+
+  // Pickup riders see a parcel until it is collected; after that it belongs to
+  // the delivery rider, who sees it through to delivery.
+  const parcels = await prisma.parcel.findMany({
+    where: {
+      OR: [
+        { pickupRiderId: rider.id, tracking: "pending" },
+        { deliveryRiderId: rider.id, tracking: { not: "pending" } },
+      ],
+    },
+    orderBy: { updatedAt: "desc" },
+  });
+
+  const rows: RiderParcel[] = parcels.map((parcel) => ({
+    id: parcel.id,
+    title: parcel.title,
+    weight: parcel.weight,
+    tracking: parcel.tracking,
+    currentLocation: parcel.currentLocation,
+    pickup_location: parcel.pickup_location,
+    pickup_district: parcel.pickup_district,
+    pickup_upazila: parcel.pickup_upazila,
+    dropoff_location: parcel.dropoff_location,
+    dropoff_district: parcel.dropoff_district,
+    dropoff_upazila: parcel.dropoff_upazila,
+    stage: parcel.tracking === "pending" ? "pickup" : "delivery",
+  }));
+
+  return <RiderParcels parcels={rows} />;
 }
 
-const RiderDashboard = () => {
+export default function RiderDashboard() {
   return (
-    <Suspense fallback={<RiderDashboardSkeleton />}>
-      <RiderDashboardGate />
+    <Suspense fallback={<RiderParcelsSkeleton />}>
+      <RiderParcelsGate />
     </Suspense>
   );
-};
-
-export default RiderDashboard;
+}

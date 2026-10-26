@@ -190,7 +190,8 @@ export default function AdminParcels({
               <thead>
                 <tr className="text-graphite">
                   {["Parcel", "Route", "Tracking", "Pickup rider", "Delivery rider"].map(
-                    (heading) => (
+                 
+                 (heading) => (
                       <th
                         key={heading}
                         scope="col"

@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Logo } from "@/components/logo";
@@ -60,11 +61,6 @@ const TIERS = [
 const GLOW: CSSProperties = {
   backgroundImage:
     "radial-gradient(60% 55% at 50% 0%, rgba(255,176,32,0.18), transparent 68%)",
-};
-
-const MAP: CSSProperties = {
-  backgroundImage:
-    "radial-gradient(90% 80% at 18% 12%, rgba(255,176,32,0.22), transparent 60%), radial-gradient(90% 80% at 86% 88%, rgba(52,211,153,0.20), transparent 62%), linear-gradient(160deg, oklch(0.975 0.008 250), oklch(0.925 0.014 250))",
 };
 
 function Arrow({ className = "" }: { className?: string }) {
@@ -166,81 +162,6 @@ const SERVICES = [
   },
 ];
 
-function AppPreview() {
-  return (
-    <div className="relative mx-auto w-74 max-w-full">
-      <div
-        className="absolute -inset-8 rounded-[3rem] opacity-80 blur-2xl"
-        style={GLOW}
-        aria-hidden
-      />
-      <div className="relative rounded-[2.75rem] border border-ink/10 bg-ink p-2.5 shadow-[0_44px_90px_-36px_rgba(18,22,34,0.6)]">
-        <div className="overflow-hidden rounded-[2.1rem] bg-paper">
-          <div className="flex items-center justify-between px-5 pt-4 text-[0.6rem] font-medium text-graphite">
-            <span>9:41</span>
-            <span className="h-3.5 w-14 rounded-full bg-ink" aria-hidden />
-            <span>5G</span>
-          </div>
-
-          <div className="relative mx-3 mt-3 h-48 overflow-hidden rounded-3xl" style={MAP}>
-            <svg
-              viewBox="0 0 300 200"
-              className="absolute inset-0 h-full w-full"
-              aria-hidden="true"
-            >
-              <path
-                d="M46 164 C 96 128, 118 74, 248 46"
-                fill="none"
-                stroke="var(--color-signal-deep)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray="7 9"
-                className="route-dash"
-              />
-              <circle cx="46" cy="164" r="6.5" fill="var(--color-ink)" />
-              <circle
-                cx="248"
-                cy="46"
-                r="9"
-                fill="var(--color-signal)"
-                stroke="var(--color-ink)"
-                strokeWidth="3"
-              />
-            </svg>
-            <span className="absolute bottom-3 left-3 rounded-full bg-paper/95 px-3 py-1 font-mono text-[0.6rem] text-ink shadow-sm">
-              Pickup · Gulshan 2
-            </span>
-          </div>
-
-          <div className="m-3 mt-4 rounded-3xl border border-ink/8 bg-paper p-4 shadow-sm">
-            <div className="flex items-center justify-between gap-3">
-              <span className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-graphite">
-                DP-1042
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-go/15 px-2.5 py-0.5 text-[0.62rem] font-semibold text-go-deep">
-                <span className="size-1.5 rounded-full bg-go-deep" aria-hidden />
-                Out for delivery
-              </span>
-            </div>
-            <p className="mt-3 font-display text-base font-bold tracking-[-0.02em] text-ink">
-              Arriving in 26 min
-            </p>
-            <div className="mt-3 flex items-center gap-3 border-t border-ink/8 pt-3">
-              <span className="grid size-9 place-items-center rounded-full bg-signal/20 text-signal-deep">
-                <ScooterIcon />
-              </span>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-ink">Rakib H.</p>
-                <p className="font-mono text-[0.62rem] text-graphite">1.1 km away</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
   return (
     <>
@@ -313,7 +234,21 @@ export default function Home() {
             </div>
 
             <div className="rise" style={{ "--d": "160ms" } as CSSProperties}>
-              <AppPreview />
+              <div className="relative mx-auto w-[248px] max-w-full">
+                <div
+                  className="absolute -inset-10 rounded-[3rem] opacity-80 blur-2xl"
+                  style={GLOW}
+                  aria-hidden
+                />
+                <Image
+                  src="/heroImage.png"
+                  alt="Dropway app showing a live parcel route on a map"
+                  width={248}
+                  height={509}
+                  preload
+                  className="relative h-auto w-full drop-shadow-[0_40px_64px_rgba(18,22,34,0.35)]"
+                />
+              </div>
             </div>
           </div>
         </section>

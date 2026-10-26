@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { recordAssignment } from "@/lib/rider-payments";
 
 // Assign a rider to either the pickup or the delivery of a parcel.
 export async function POST(req: NextRequest) {
@@ -32,6 +33,9 @@ export async function POST(req: NextRequest) {
     where: { id: parcelId },
     data,
   });
+
+  // Open the rider's earning for this leg (both pickup and delivery pay out).
+  await recordAssignment(parcelId, role, riderId);
 
   return NextResponse.json({ parcel });
 }

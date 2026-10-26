@@ -6,6 +6,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
+const DEMO_ACCOUNTS = [
+  { role: "Admin", email: "admin@admin.com", password: "12345678" },
+  { role: "Rider", email: "rider@rider.com", password: "12345678" },
+];
+
 const LoginPage = () => {
   const router = useRouter();
 
@@ -13,6 +18,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [filled, setFilled] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,6 +40,13 @@ const LoginPage = () => {
     router.push("/");
   }
 
+  const fillDemo = (account: (typeof DEMO_ACCOUNTS)[number]) => {
+    setFilled(account.role);
+    setEmail(account.email);
+    setPassword(account.password);
+    setError("");
+  }
+
   return (
     <AuthShell
       title="Welcome back"
@@ -50,6 +63,31 @@ const LoginPage = () => {
         </>
       }
     >
+      <div className="mb-6">
+        <span className="eyebrow block text-graphite">Quick fill</span>
+        <div
+          role="group"
+          aria-label="Fill demo account"
+          className="mt-2 flex gap-1 rounded-xl border border-ink/12 bg-paper-2 p-1"
+        >
+          {DEMO_ACCOUNTS.map((account) => (
+            <button
+              key={account.role}
+              type="button"
+              aria-pressed={filled === account.role}
+              onClick={() => fillDemo(account)}
+              className={`flex-1 rounded-lg px-3 py-2 text-sm transition-colors ${
+                filled === account.role
+                  ? "bg-paper font-semibold text-ink shadow-sm"
+                  : "text-graphite hover:text-ink"
+              }`}
+            >
+              {account.role}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <form onSubmit={handleLogin} className="space-y-4">
         <TextField
           id="email"
@@ -59,7 +97,10 @@ const LoginPage = () => {
           placeholder="you@example.com"
           required
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setFilled(null);
+          }}
         />
         <TextField
           id="password"
@@ -69,7 +110,10 @@ const LoginPage = () => {
           placeholder="••••••••"
           required
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setFilled(null);
+          }}
         />
 
         {error ? (

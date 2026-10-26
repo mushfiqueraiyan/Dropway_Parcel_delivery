@@ -55,6 +55,7 @@ model Parcel {
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   pickupRider     Rider?   @relation("PickupRider", fields: [pickupRiderId], references: [id])
   deliveryRider   Rider?   @relation("DeliveryRider", fields: [deliveryRiderId], references: [id])
+  payments        Payment[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -125,8 +126,26 @@ model Rider{
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   pickupParcels   Parcel[] @relation("PickupRider")
   deliveryParcels Parcel[] @relation("DeliveryRider")
+  payments        Payment[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   @@map("rider")
+}
+
+model Payment {
+  id        String   @id @map("_id")
+  riderId   String
+  parcelId  String
+  leg       String
+  amount    Float
+  status    String   @default("pending")
+  rider     Rider    @relation(fields: [riderId], references: [id], onDelete: Cascade)
+  parcel    Parcel   @relation(fields: [parcelId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([riderId])
+  @@index([parcelId])
+  @@map("payment")
 }
